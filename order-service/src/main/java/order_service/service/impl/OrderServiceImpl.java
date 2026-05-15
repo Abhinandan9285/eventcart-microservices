@@ -45,4 +45,24 @@ public class OrderServiceImpl implements  OrderService {
                 .status(savedOrder.getStatus().name())
                 .build();
     }
+
+    @Override
+    public void markOrderConfirmed(Long orderId) {
+
+        Order order = orderRepository.findById(orderId)
+                        .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(OrderStatus.CONFIRMED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void markOrderFailed(Long orderId, String reason) {
+
+        Order order = orderRepository.findById(orderId)
+                        .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(OrderStatus.FAILED);
+        orderRepository.save(order);
+    }
 }
