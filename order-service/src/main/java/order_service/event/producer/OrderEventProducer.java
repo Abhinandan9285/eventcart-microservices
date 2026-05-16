@@ -15,7 +15,8 @@ public class OrderEventProducer {
     public void publishOrderCreatedEvent(OrderCreatedEvent event) {
 
         rabbitTemplate.convertAndSend(
-                RabbitMQConfig.ORDER_QUEUE,
+                RabbitMQConfig.ORDER_EXCHANGE,
+                RabbitMQConfig.ORDER_ROUTING_KEY,
                 event
         );
     }

@@ -24,6 +24,10 @@ spring:
     username: admin
     password: admin123
 
+    listener:
+      simple:
+        default-requeue-rejected: false
+
 eureka:
   client:
     service-url:
