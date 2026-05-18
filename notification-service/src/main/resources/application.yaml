@@ -1,0 +1,18 @@
+
+server:
+  port: 8084
+
+spring:
+  application:
+    name: notification-service
+
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+
+    listener:
+      simple:
+        default-requeue-rejected: false

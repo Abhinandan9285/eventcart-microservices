@@ -7,7 +7,10 @@ import order_service.constant.OrderStatus;
 import order_service.dto.request.CreateOrderRequest;
 import order_service.dto.response.OrderResponse;
 import order_service.entity.Order;
+import order_service.event.payload.OrderConfirmedEvent;
 import order_service.event.payload.OrderCreatedEvent;
+import order_service.event.payload.OrderFailedEvent;
+import order_service.event.producer.NotificationEventProducer;
 import order_service.event.producer.OrderEventProducer;
 import order_service.repository.OrderRepository;
 import order_service.service.OrderService;
@@ -24,6 +27,7 @@ public class OrderServiceImpl implements  OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderEventProducer producer;
+    private final NotificationEventProducer notificationEventProducer;
 
     @Override
     public OrderResponse createOrder(CreateOrderRequest request) {
@@ -60,6 +64,8 @@ public class OrderServiceImpl implements  OrderService {
 
         order.setStatus(OrderStatus.CONFIRMED);
         orderRepository.save(order);
+
+        notificationEventProducer.publishOrderConfirmedEvent(new OrderConfirmedEvent(orderId));
     }
 
     @Override
@@ -70,5 +76,7 @@ public class OrderServiceImpl implements  OrderService {
 
         order.setStatus(OrderStatus.FAILED);
         orderRepository.save(order);
+
+        notificationEventProducer.publishOrderFailedEvent(new OrderFailedEvent(orderId,reason));
     }
 }

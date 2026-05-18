@@ -33,6 +33,8 @@ public class RabbitMQConfig {
     public static final String PAYMENT_SUCCESS_ROUTING_KEY = "payment.success.routing.key";
     public static final String PAYMENT_FAILED_ROUTING_KEY = "payment.failed.routing.key";
 
+    public static final String ORDER_CONFIRMED_ROUTING_KEY = "order.confirmed.routing.key";
+    public static final String ORDER_FAILED_ROUTING_KEY = "order.failed.routing.key";
     @Bean
     public DirectExchange orderExchange() {
         return new DirectExchange(ORDER_EXCHANGE);
