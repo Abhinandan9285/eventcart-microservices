@@ -4,6 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import order_service.constant.OrderStatus;
+import order_service.dto.InventoryResponse;
+import order_service.dto.OrderDetailsResponse;
+import order_service.dto.PaymentResponse;
 import order_service.dto.request.CreateOrderRequest;
 import order_service.dto.response.OrderResponse;
 import order_service.entity.Order;
@@ -14,6 +17,9 @@ import order_service.event.producer.NotificationEventProducer;
 import order_service.event.producer.OrderEventProducer;
 import order_service.repository.OrderRepository;
 import order_service.service.OrderService;
+import order_service.service.feign.InventoryFeignClient;
+import order_service.service.feign.PaymentFeignClient;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -25,6 +31,8 @@ import java.util.UUID;
 public class OrderServiceImpl implements  OrderService {
 
     private final OrderRepository orderRepository;
+    private final InventoryFeignClient inventoryFeignClient;
+    private final PaymentFeignClient paymentFeignClient;
 
     private final OrderEventProducer producer;
     private final NotificationEventProducer notificationEventProducer;
@@ -78,5 +86,22 @@ public class OrderServiceImpl implements  OrderService {
         orderRepository.save(order);
 
         notificationEventProducer.publishOrderFailedEvent(new OrderFailedEvent(orderId,reason));
+    }
+
+    public OrderDetailsResponse getOrderDetails(UUID orderId) {
+
+        Order order = orderRepository.findById(orderId).orElse(new Order());
+
+        InventoryResponse inventory = inventoryFeignClient.getInventory(order.getProductCode());
+        PaymentResponse payment = paymentFeignClient.getPayment(order.getId());
+
+        return OrderDetailsResponse.builder()
+                .orderId(order.getId())
+                .productCode(order.getProductCode())
+                .quantity(order.getQuantity())
+                .status(order.getStatus())
+                .inventory(inventory)
+                .payment(payment)
+                .build();
     }
 }
