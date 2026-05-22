@@ -12,7 +12,8 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/config
+          search-locations: file:///D://distributed-order-platform-config
+#          search-locations: classpath:/config
 
 eureka:
   client:
