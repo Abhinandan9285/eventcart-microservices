@@ -37,6 +37,12 @@ spring:
               filters:
                 - JwtAuthentication
 
+            - id: notification-service
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/notification/**
+              filters:
+                - JwtAuthentication
 eureka:
   client:
     service-url:

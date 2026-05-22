@@ -5,6 +5,11 @@ spring:
   application:
     name: order-service
 
+  Profiles:
+    active: prod
+  config:
+    import: optional:configserver:http://localhost:8086/
+
   datasource:
     url: jdbc:postgresql://localhost:5432/order_db
     username: admin

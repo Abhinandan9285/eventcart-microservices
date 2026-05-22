@@ -6,6 +6,11 @@ spring:
   application:
     name: inventory-service
 
+  Profiles:
+    active: prod
+  config:
+    import: optional:configserver:http://localhost:8086/
+
   datasource:
     url: jdbc:postgresql://localhost:5432/inventory_db
     username: admin

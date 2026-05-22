@@ -1,0 +1,9 @@
+
+notification:
+  message: welcome to order platform notification related default apis
+  contactDetails:
+    name: Abhi-Developer
+    email: test@gmail.com
+  onCallSupport:
+    - 123456789
+    - 1234568999

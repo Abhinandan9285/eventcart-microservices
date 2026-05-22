@@ -6,6 +6,10 @@ spring:
   application:
     name: notification-service
 
+  Profiles:
+    active: prod
+  config:
+    import: optional:configserver:http://localhost:8086/
 
   rabbitmq:
     host: localhost
@@ -16,3 +20,8 @@ spring:
     listener:
       simple:
         default-requeue-rejected: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

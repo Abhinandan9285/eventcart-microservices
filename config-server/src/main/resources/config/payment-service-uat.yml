@@ -1,0 +1,8 @@
+payment:
+  message: welcome to order platform payment related uat apis
+  contactDetails:
+    name: Abhi-Developer
+    email: test@gmail.com
+  onCallSupport:
+    - 123456789
+    - 1234568999
