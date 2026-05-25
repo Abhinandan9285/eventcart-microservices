@@ -6,14 +6,24 @@ spring:
     name: config-server
 
   profiles:
-    active: native
+    active: git
+#    active: native
 
   cloud:
     config:
       server:
-        native:
-          search-locations: file:///D://distributed-order-platform-config
+        git:
+          uri: https://github.com/Abhinandan9285/eventcart-config.git
+          default-label: main
+          clone-on-start: true
+          force-pull: true
+          timeout: 5
+#        native:
+#          search-locations: file:///D://distributed-order-platform-config
 #          search-locations: classpath:/config
+
+encrypt:
+  key: 343SDFG44T221533DSSADFE3E
 
 eureka:
   client:
