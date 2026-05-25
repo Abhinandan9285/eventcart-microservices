@@ -22,6 +22,12 @@ spring:
 #          search-locations: file:///D://distributed-order-platform-config
 #          search-locations: classpath:/config
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+
 encrypt:
   key: 343SDFG44T221533DSSADFE3E
 
@@ -29,3 +35,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

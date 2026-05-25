@@ -40,7 +40,8 @@ public class JwtAuthentication extends AbstractGatewayFilterFactory<JwtAuthentic
              */
             if (path.contains("/auth/login")
                     || path.contains("/auth/register")
-                    || path.contains("/eureka")) {
+                    || path.contains("/eureka")
+                    || path.contains("/actuator")) {
 
                 return chain.filter(exchange);
             }
