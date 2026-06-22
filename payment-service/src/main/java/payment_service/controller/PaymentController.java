@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/payments")
 public class PaymentController {
     private final PaymentService paymentService;
     private final ContactInfoDto contactInfoDto;

@@ -7,6 +7,7 @@ import common_lib.dto.response.PaymentResponse;
 import common_lib.event.OrderConfirmedEvent;
 import common_lib.event.OrderCreatedEvent;
 import common_lib.event.OrderFailedEvent;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,10 +90,22 @@ public class OrderServiceImpl implements  OrderService {
 
     public OrderDetailsResponse getOrderDetails(UUID orderId) {
 
-        Order order = orderRepository.findById(orderId).orElse(new Order());
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) return new OrderDetailsResponse();
 
-        InventoryResponse inventory = inventoryFeignClient.getInventory(order.getProductCode());
-        PaymentResponse payment = paymentFeignClient.getPayment(order.getId());
+        InventoryResponse inventory = null;
+        try {
+            inventory = inventoryFeignClient.getInventory(order.getProductCode());
+        } catch (FeignException ex){
+            log.error(ex.getMessage());
+        }
+
+        PaymentResponse payment = null;
+        try {
+            payment = paymentFeignClient.getPayment(order.getId());
+        }catch (FeignException ex){
+            log.error(ex.getMessage());
+        }
 
         return OrderDetailsResponse.builder()
                 .orderId(order.getId())

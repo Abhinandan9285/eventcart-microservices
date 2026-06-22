@@ -5,6 +5,7 @@ import common_lib.event.InventoryFailedEvent;
 import common_lib.event.InventoryReservedEvent;
 import common_lib.event.InventoryRollbackEvent;
 import common_lib.event.OrderCreatedEvent;
+import common_lib.exception.BadRequestException;
 import inventory_service.entity.Inventory;
 import inventory_service.event.producer.InventoryReserveProducer;
 import inventory_service.repository.InventoryRepository;
@@ -57,7 +58,7 @@ public class InventoryServiceImpl implements InventoryService {
     public InventoryResponse getInventory(String productCode) {
         Inventory inventory = inventoryRepository
                 .findByProductCode(productCode)
-                .orElse(new Inventory());
+                .orElseThrow(() -> new BadRequestException("No Inventory Found With product: "+ productCode));
 
         return new InventoryResponse(
                 inventory.getProductCode(),

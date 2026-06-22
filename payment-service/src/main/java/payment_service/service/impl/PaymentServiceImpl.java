@@ -6,6 +6,7 @@ import common_lib.event.InventoryReservedEvent;
 import common_lib.event.InventoryRollbackEvent;
 import common_lib.event.PaymentFailedEvent;
 import common_lib.event.PaymentSuccessEvent;
+import common_lib.exception.BadRequestException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponse getPayment(UUID orderId) {
-        Payment payment = paymentRepository.findByOrderId(orderId).orElse(new Payment());
+        Payment payment = paymentRepository
+                .findByOrderId(orderId)
+                .orElseThrow(() -> new BadRequestException("No Payment Details Found for OrderId: " + orderId));
 
         return new PaymentResponse(
                 payment.getOrderId(),
