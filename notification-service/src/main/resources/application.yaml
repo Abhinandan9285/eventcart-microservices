@@ -6,11 +6,6 @@ spring:
   application:
     name: notification-service
 
-  Profiles:
-    active: prod
-  config:
-    import: optional:configserver:http://localhost:8086/
-
   rabbitmq:
     host: localhost
     port: 5672
@@ -20,6 +15,18 @@ spring:
     listener:
       simple:
         default-requeue-rejected: false
+
+  profiles:
+    active: prod
+
+  config:
+    import: "optional:configserver:"
+
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG-SERVER
 
 eureka:
   client:
