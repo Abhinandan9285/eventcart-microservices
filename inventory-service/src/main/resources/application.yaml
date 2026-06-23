@@ -33,13 +33,13 @@ spring:
     active: prod
 
   config:
-    import: "optional:configserver:"
+    import: configserver:http://config:8086/
 
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: CONFIG-SERVER
+#  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: CONFIG-SERVER
 
 eureka:
   client:
